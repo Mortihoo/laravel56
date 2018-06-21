@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     // list
     public function index() {
-        $posts = Post::orderBy('created_at', "desc")->withCount(["comments",'zans'])->paginate(6);
+        $posts = Post::orderBy('created_at', "desc")->withCount(["comments", 'zans'])->paginate(5);
         return view('post/index', compact('posts'));
     }
 
@@ -126,5 +126,21 @@ class PostController extends Controller
     public function unzan(Post $post) {
         $post->zan(\Auth::id())->delete();
         return back();
+    }
+
+    //  搜索页
+    public function search() {
+        //validation
+        $this->validate(request(), [
+            'query' => "required",
+        ]);
+
+
+        //work
+        $query = request('query');
+        $posts = \App\Post::search($query)->paginate(5);
+
+        //render
+        return view('post.search', compact('posts', 'query'));
     }
 }

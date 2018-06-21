@@ -16,7 +16,7 @@
 //});
 
 // index
-route::get('/', function (){
+route::get('/', function () {
     return redirect('/login');
 });
 
@@ -65,6 +65,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('{post}/zan', 'PostController@zan');
         //  unzan
         Route::get('{post}/unzan', 'PostController@unzan');
+        //  search
+        Route::get('search', 'PostController@search');
     });
 
 

@@ -5,8 +5,25 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
+use Laravel\Scout\Searchable;
+
 class Post extends Model
 {
+    use Searchable;
+
+    //  定义索引里面的type
+    public function searchableAs() {
+        return 'post';
+    }
+
+    //  定义有哪些字段需要搜索
+    public function toSearchableArray() {
+        return [
+            'title' => $this->title,
+            'content'=>$this->content,
+        ];
+    }
+
     protected $guarded = []; // 不可以注入的字段
     //protected  $fillable ; // 可以注入的字段
 
