@@ -25,6 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         //
         Route::pattern('post', '[\d]+');
+        Route::pattern('user', '[\d]+');
 
         parent::boot();
     }

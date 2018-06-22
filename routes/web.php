@@ -40,6 +40,12 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/user/me/setting', 'UserController@setting');
     //user modify information action
     Route::post('/user/me/setting', 'UserController@settingStore');
+    //  个人中心
+    Route::get('/user/{user}', 'UserController@show');
+    //  关注某人
+    Route::get('/user/{user}/fan', 'UserController@fan');
+    //  取消关注某人
+    Route::get('/user/{user}/unfan', 'UserController@unfan');
 
     //========================================
     //article
@@ -68,6 +74,5 @@ Route::middleware(['auth:web'])->group(function () {
         //  search
         Route::get('search', 'PostController@search');
     });
-
 
 });
