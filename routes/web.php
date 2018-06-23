@@ -43,9 +43,9 @@ Route::middleware(['auth:web'])->group(function () {
     //  个人中心
     Route::get('/user/{user}', 'UserController@show');
     //  关注某人
-    Route::get('/user/{user}/fan', 'UserController@fan');
+    Route::post('/user/{user}/fan', 'UserController@fan');
     //  取消关注某人
-    Route::get('/user/{user}/unfan', 'UserController@unfan');
+    Route::post('/user/{user}/unfan', 'UserController@unfan');
 
     //========================================
     //article

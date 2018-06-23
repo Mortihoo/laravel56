@@ -51,22 +51,39 @@ class UserController extends Controller
         $user = User::withCount(['stars', 'fans', 'posts'])->find($user->id);
 
         //  这个人的文章列表
+        $posts = $user->posts()->orderBy('created_at', 'desc')->take(10)->get();
 
-        //  这个人的关注用户,包含
+        //  这个人的关注用户,包含 关注用户的 关注 粉丝 文章
+        $stars = $user->stars;
+        $susers = User::whereIn('id', $stars->pluck('star_id'))->withCount(['stars', 'fans', 'posts'])->get();
 
-        //
+        //  这个人的粉丝用户,包含 粉丝用户的 关注 粉丝 文章
+        $fans = $user->fans;
+        $fusers = User::whereIn('id', $fans->pluck('fan_id'))->withCount(['stars', 'fans', 'posts'])->get();
 
-        return view('user.show');
+        return view('user.show', compact('user', 'posts', 'susers', 'fusers'));
     }
 
     //  关注
     public function fan(User $user) {
+        $me = \Auth::user();
+        $me->doFan($user->id);
 
+        return [
+            'error' => 0,
+            'msg' => '',
+        ];
     }
 
     //  取消关注
     public function unfan(User $user) {
+        $me = \Auth::user();
+        $me->doUnFan($user->id);
 
+        return [
+            'error' => 0,
+            'msg' => '',
+        ];
     }
 
 }
