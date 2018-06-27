@@ -36,16 +36,19 @@ Route::post('/login', 'LoginController@login');
 Route::middleware(['auth:web'])->group(function () {
     //logout page
     Route::get('/logout', 'LoginController@logout');
-    //user information page
-    Route::get('/user/me/setting', 'UserController@setting');
-    //user modify information action
-    Route::post('/user/me/setting', 'UserController@settingStore');
-    //  个人中心
-    Route::get('/user/{user}', 'UserController@show');
-    //  关注某人
-    Route::post('/user/{user}/fan', 'UserController@fan');
-    //  取消关注某人
-    Route::post('/user/{user}/unfan', 'UserController@unfan');
+
+    Route::prefix('user')->group(function () {
+        //user information page
+        Route::get('me/setting', 'UserController@setting');
+        //user modify information action
+        Route::post('me/setting', 'UserController@settingStore');
+        //  个人中心
+        Route::get('{user}', 'UserController@show');
+        //  关注某人
+        Route::post('{user}/fan', 'UserController@fan');
+        //  取消关注某人
+        Route::post('{user}/unfan', 'UserController@unfan');
+    });
 
     //========================================
     //article
@@ -75,4 +78,16 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('search', 'PostController@search');
     });
 
+    //  专题模块
+    Route::prefix('topic')->group(function () {
+        //  专题详情页
+        Route::get('{topic}', 'TopicController@show');
+        //  专题投稿
+        Route::post('{topic}/submit', 'TopicController@submit');
+
+    });
+
 });
+
+
+include_once('admin_url.php');

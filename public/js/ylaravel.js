@@ -1,3 +1,10 @@
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 let E = window.wangEditor;
 let editor = new E('#editor');
 if ($("#editor")) {
@@ -22,11 +29,6 @@ $(".preview_input").change(function (event) {
     $(event.target).next(".preview_img").attr("src", url);
 });
 
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
 
 $(".like-button").click(function (event) {
     let target = $(event.target);

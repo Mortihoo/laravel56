@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 use Laravel\Scout\Searchable;
+use PhpParser\Builder;
 
 class Post extends Model
 {
@@ -20,7 +21,7 @@ class Post extends Model
     public function toSearchableArray() {
         return [
             'title' => $this->title,
-            'content'=>$this->content,
+            'content' => $this->content,
         ];
     }
 
@@ -45,6 +46,31 @@ class Post extends Model
     //  associated zan --> get all zan
     public function zans() {
         return $this->hasMany(\App\Zan::class);
+    }
+
+    //  属于某个作者的文章
+    public function scopeAuthorBy(\Illuminate\Database\Eloquent\Builder $query, $user_id) {
+        return $query->where('user_id', $user_id);
+    }
+
+    //  associated topics
+    public function postTopics() {
+        return $this->hasMany(\App\PostTopic::class, 'post_id', 'id');
+    }
+
+    //  不属于某个专题的文章
+    public function scopeTopicNotBy(\Illuminate\Database\Eloquent\Builder $query, $topic_id) {
+        return $query->doesntHave('postTopics', 'and', function ($q) use ($topic_id) {
+            $q->where('topic_id', $topic_id);
+        });
+    }
+
+    protected static function boot() {
+        parent::boot();
+
+        static::addGlobalScope("available", function (\Illuminate\Database\Eloquent\Builder $builder) {
+            $builder->whereIn('status', [0, 1]);
+        });
     }
 
 }

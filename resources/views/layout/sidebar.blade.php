@@ -10,7 +10,7 @@
                 欢迎来到简书网站
             </p>
             <p>
-                <strong><a href="/">简书网站</a></strong> 基于 Laravel5.4 构建
+                <strong><a href="/">简书网站</a></strong> 基于 Laravel5.6 构建
             </p>
             <div class="bdsharebuttonbox bdshare-button-style0-24" data-bd-bind="1494580268777"><a href="#"
                                                                                                    class="bds_more"
@@ -56,20 +56,13 @@
         <div class="panel-heading">
             专题
         </div>
-
         <ul class="category-root list-group">
+            @foreach($topics as $topic)
             <li class="list-group-item">
-                <a href="/topic/1">旅游
+                <a href="/topic/{{$topic->id}}">{{$topic->name}}
                 </a>
             </li>
-            <li class="list-group-item">
-                <a href="/topic/2">轻松
-                </a>
-            </li>
-            <li class="list-group-item">
-                <a href="/topic/5">测试专题
-                </a>
-            </li>
+            @endforeach
         </ul>
 
     </aside>
